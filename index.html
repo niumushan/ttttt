@@ -2,45 +2,66 @@
 <html lang="ja">
 <head>
   <meta charset="UTF-8">
-  <title>クリップボードコピー</title>
+  <title>Stable Diffusion プロンプト生成</title>
   <style>
     body {
       font-family: sans-serif;
-      text-align: center;
-      padding-top: 50px;
+      padding: 2em;
+      max-width: 500px;
+      margin: auto;
     }
-    button {
-      font-size: 1.2em;
-      padding: 10px 20px;
-      border: none;
-      border-radius: 10px;
-      background-color: #4CAF50;
-      color: white;
-      cursor: pointer;
-    }
-    button:hover {
-      background-color: #45a049;
-    }
-    .message {
-      margin-top: 20px;
+    input, button {
+      padding: 0.7em;
       font-size: 1em;
-      color: #333;
+      margin: 0.5em 0;
+      width: 100%;
+      box-sizing: border-box;
+    }
+    .result {
+      background: #f5f5f5;
+      padding: 1em;
+      margin-top: 1em;
+      border-radius: 10px;
+      white-space: pre-wrap;
     }
   </style>
 </head>
 <body>
-  <h1>「hello, world」をコピー</h1>
-  <button onclick="copyText()">コピーする</button>
-  <div class="message" id="message"></div>
+  <h2>SD プロンプト生成＆コピー</h2>
+
+  <label>被写体（例: cat in space）</label>
+  <input type="text" id="subject" placeholder="cat in space">
+
+  <label>スタイル（例: anime style）</label>
+  <input type="text" id="style" placeholder="anime style">
+
+  <label>ライティング（例: dramatic lighting）</label>
+  <input type="text" id="lighting" placeholder="dramatic lighting">
+
+  <label>ネガティブ要素（例: extra limbs）</label>
+  <input type="text" id="negative_addon" placeholder="extra limbs">
+
+  <button onclick="generateAndCopy()">生成してコピー</button>
+
+  <div class="result" id="result"></div>
 
   <script>
-    function copyText() {
-      const text = "hello, world";
-      navigator.clipboard.writeText(text).then(() => {
-        document.getElementById("message").textContent = "コピーしました！";
+    function generateAndCopy() {
+      const subject = document.getElementById("subject").value || "a beautiful landscape";
+      const style = document.getElementById("style").value || "realistic";
+      const lighting = document.getElementById("lighting").value || "soft lighting";
+      const negative = document.getElementById("negative_addon").value || "bad hands";
+
+      const prompt = `masterpiece, best quality, ${subject}, ${style}, ${lighting}`;
+      const negativePrompt = `low quality, blurry, bad anatomy, ${negative}`;
+
+      const resultText = `Prompt:\n${prompt}\n\nNegative Prompt:\n${negativePrompt}`;
+      document.getElementById("result").textContent = resultText;
+
+      navigator.clipboard.writeText(resultText).then(() => {
+        alert("クリップボードにコピーしました！");
       }).catch(err => {
-        document.getElementById("message").textContent =
-          "コピーに失敗しました: " + err;
+        alert("コピーに失敗しました: " + err);
       });
     }
   </script>
