@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <title>クリップボードコピー</title>
+  <style>
+    body {
+      font-family: sans-serif;
+      text-align: center;
+      padding-top: 50px;
+    }
+    button {
+      font-size: 1.2em;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 10px;
+      background-color: #4CAF50;
+      color: white;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #45a049;
+    }
+    .message {
+      margin-top: 20px;
+      font-size: 1em;
+      color: #333;
+    }
+  </style>
+</head>
+<body>
+  <h1>「hello, world」をコピー</h1>
+  <button onclick="copyText()">コピーする</button>
+  <div class="message" id="message"></div>
+
+  <script>
+    function copyText() {
+      const text = "hello, world"; 
+      navigator.clipboard.writeText(text).then(() => {
+        document.getElementById("message").textContent = "コピーしました！";
+      }).catch(err => {
+        document.getElementById("message").textContent =
+          "コピーに失敗しました: " + err;
+      });
+    }
+  </script>
+</body>
+</html>
